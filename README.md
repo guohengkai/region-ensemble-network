@@ -10,7 +10,7 @@ Here we provide the testing results of basic network (`results/dataset_basic.txt
 For results and labels, each line is corresponding to one image, which has J x 3 numbers indicating (x, y, z) of J joint locations. The (x, y) are in pixels and z is in mm.
 
 ## Evaluation
-Please use the Python scripts for evaluation, which requires numpy and matplotlib libraries. For example:
+Please use the Python scripts for evaluation, which require [numpy](http://www.numpy.org/) and [matplotlib](http://matplotlib.org/). Here is an example:
 ``` bash
 $ python evaluation/compute_error.py icvl results/icvl_ren_4x6x6.txt
 ```

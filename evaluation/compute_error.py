@@ -11,6 +11,10 @@ def print_usage():
 
 
 def draw_error(dataset, errs):
+    mean_errs = np.mean(errs, axis=0)
+    mean_errs = np.append(mean_errs, np.mean(mean_errs))
+    print('mean error: {:.2f}mm'.format(mean_errs[-1]))
+
     if dataset == 'icvl':
         joint_idx = [0, 1, 3, 4, 6, 7, 9, 10, 12, 13, 15, 16]
         names = ['Palm', 'Thumb.R', 'Thumb.T', 'Index.R', 'Index.T', 'Mid.R', 'Mid.T', 'Ring.R', 'Ring.T', 'Pinky.R', 'Pinky.T', 'Mean']
@@ -18,13 +22,26 @@ def draw_error(dataset, errs):
         joint_idx = [0, 1, 2, 5, 3, 13, 12, 11, 10, 9, 8, 7, 6, 14];
         names = ['Palm', 'Wrist1', 'Wrist2', 'Thumb.R', 'Thumb.T', 'Index.R', 'Index.T', 'Mid.R', 'Mid.T', 'Ring.R', 'Ring.T', 'Pinky.R', 'Pinky.T', 'Mean'];
 
-    fig = plt.figure()
     x = np.arange(len(joint_idx))
-    plt.bar(x, errs[joint_idx])
-    # plt.xlim([0.4, len(joint_idx) + 0.6])
+    plt.figure()
+    plt.bar(x, mean_errs[joint_idx])
     plt.xticks(x + 0.5, names, rotation='vertical')
     plt.ylabel('Mean Error (mm)')
-    plt.show()
+    plt.grid(True)
+
+
+def draw_map(errs):
+    err_flat = errs.ravel()
+    thresholds = np.arange(0, 85, 5)
+    results = np.zeros(thresholds.shape)
+    for idx, th in enumerate(thresholds):
+        results[idx] = np.where(err_flat <= th)[0].shape[0] * 1.0 / err_flat.shape[0]
+
+    plt.figure()
+    plt.plot(thresholds, results)
+    plt.xlabel('Distance Threshold (mm)')
+    plt.ylabel('Fraction of frames within distance')
+    plt.grid(True)
     
 
 def main():
@@ -35,11 +52,9 @@ def main():
     in_file = sys.argv[2]
 
     errs = get_errors(dataset, in_file)
-    mean_errs = np.mean(errs, axis=0)
-    mean_errs = np.append(mean_errs, np.mean(mean_errs))
-    print('mean error: {:.2f}mm'.format(mean_errs[-1]))
-
-    draw_error(dataset, mean_errs)
+    draw_error(dataset, errs)
+    draw_map(errs)
+    plt.show()
 
 
 if __name__ == '__main__':

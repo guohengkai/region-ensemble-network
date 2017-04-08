@@ -7,7 +7,13 @@ This is the project of work [Region Ensemble Network: Improving Convolutional Ne
 ## Results
 Here we provide the testing results of basic network (`results/dataset_basic.txt`) and region ensemble network (`results/dataset_ren_4x6x6.txt`) for [ICVL](http://www.iis.ee.ic.ac.uk/~dtang/hand.html) dataset and [NYU](http://cims.nyu.edu/~tompson/NYU_Hand_Pose_Dataset.htm) dataset in our paper. Also we provide the testing labels (`labels/dataset_test_label.txt`), computed centers (`labels/dataset_center.txt`) and corresponding image names (`labels/dataset_test_list.txt`).
 
-For results and labels, each line is corresponding to one image, which has Jx3 numbers indicating (x, y, z) of J joint locations. The (x, y) are in pixels and z is in mm. We will release the evaluation codes soon.
+For results and labels, each line is corresponding to one image, which has J x 3 numbers indicating (x, y, z) of J joint locations. The (x, y) are in pixels and z is in mm.
+
+## Evaluation
+Please use the Python scripts for evaluation, which requires numpy and matplotlib libraries. For example:
+``` bash
+$ python evaluation/compute_error.py icvl results/icvl_ren_4x6x6.txt
+```
 
 ## Models
 The models will be released soon.

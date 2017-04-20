@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 
 
@@ -27,6 +28,7 @@ def pixel2world(x, fx, fy, ux, uy):
     x[:, :, 1] = (x[:, :, 1] - uy) * x[:, :, 2] / fy
     return x
 
+
 def get_errors(dataset, in_file):
     if not check_dataset(dataset):
         print('invalid dataset: {}'.format(dataset))
@@ -38,3 +40,39 @@ def get_errors(dataset, in_file):
     outputs = pixel2world(outputs, *params)
     errors = np.sqrt(np.sum((labels - outputs) ** 2, axis=2))
     return errors
+
+
+def get_model(dataset, name='ren_4x6x6'):
+    if not check_dataset(dataset):
+        print('invalid dataset: {}'.format(dataset))
+        exit(-1)
+    return ('models/deploy_{}_{}.prototxt'.format(dataset, name),
+            'models/model_{}_{}.caffemodel'.format(dataset, name))
+
+
+def load_image(dataset, name, input_size):
+    if not check_dataset(dataset):
+        print('invalid dataset: {}'.format(dataset))
+        exit(-1)
+    if dataset == 'icvl':
+        #img = cv2.imread(name, cv2.CV_LOAD_IMAGE_ANYDEPTH)
+        img = cv2.imread(name, 2)
+        return cv2.resize(img, (input_size, input_size)).astype(float)
+    elif dataset == 'nyu':
+        ori_img = cv2.resize(cv2.imread(name), (input_size, input_size))
+        depth_img = np.empty(ori_img.shape[:2], dtype=np.float32)
+        for r in range(depth_img.shape[0]):
+            for c in range(depth_img.shape[1]):
+                depth_img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
+        return depth_img
+
+
+def load_names(dataset):
+    with open('labels/{}_test_list.txt'.format(dataset)) as f:
+        return [line.strip() for line in f]
+
+
+def load_centers(dataset):
+    with open('labels/{}_center.txt'.format(dataset)) as f:
+        return np.array([map(float,
+            line.strip().split()) for line in f])

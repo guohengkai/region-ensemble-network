@@ -14,7 +14,7 @@ def save_results(results, out_file):
         for i in range(results.shape[0]):
             for j in range(results.shape[1]):
                 for k in range(results.shape[2]):
-                    f.write('{} '.format(results[i, j, k]))
+                    f.write('{:.3f} '.format(results[i, j, k]))
             f.write('\n')
 
 def main():

@@ -18,7 +18,7 @@ class HandModel(object):
 
     def detect_images(self, imgs, centers=None):
         assert centers is not None or self._center_loader is not None
-        batch_size = imgs.shape[0]
+        batch_size = len(imgs)
         if centers is None:
             centers = np.zeros([batch_size, 3], dtype=np.float32)
             for idx, img in enumerate(imgs):
@@ -26,7 +26,7 @@ class HandModel(object):
         _, channels, height, width = self._net.blobs['data'].shape
         self._net.blobs['data'].reshape(batch_size, channels, height, width)
         for idx in range(batch_size):
-            self._net.blobs['data'].data[idx, ...] = self._crop_image(imgs[idx, ...], centers[idx, :])
+            self._net.blobs['data'].data[idx, ...] = self._crop_image(imgs[idx], centers[idx])
         poses = self._net.forward()['predict']
         return self._transform_pose(poses, centers)
 
@@ -39,8 +39,7 @@ class HandModel(object):
         batch_centers = []
         results = []
         for idx, name in enumerate(names):
-            img = util.load_image(dataset, os.path.join(base_dir, name),
-                    self._input_size)
+            img = util.load_image(dataset, os.path.join(base_dir, name))
             batch_imgs.append(img)
             if centers is None:
                 batch_centers.append(self._center_loader(img))
@@ -48,15 +47,13 @@ class HandModel(object):
                 batch_centers.append(centers[idx, :])
 
             if len(batch_imgs) == max_batch:
-                for line in self.detect_images(np.array(batch_imgs),
-                        np.array(batch_centers)):
+                for line in self.detect_images(batch_imgs, batch_centers):
                     results.append(line)
                 del batch_imgs[:]
                 del batch_centers[:]
                 print('{}/{}'.format(idx + 1, len(names)))
         if batch_imgs:
-            for line in self.detect_images(np.array(batch_imgs),
-                    np.array(batch_centers)):
+            for line in self.detect_images(batch_imgs, batch_centers):
                 results.append(line)
         print('done!')
         return np.array(results)

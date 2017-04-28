@@ -50,16 +50,20 @@ def get_model(dataset, name='ren_4x6x6'):
             'models/model_{}_{}.caffemodel'.format(dataset, name))
 
 
-def load_image(dataset, name, input_size):
+def load_image(dataset, name, input_size=None):
     if not check_dataset(dataset):
         print('invalid dataset: {}'.format(dataset))
         exit(-1)
     if dataset == 'icvl':
         #img = cv2.imread(name, cv2.CV_LOAD_IMAGE_ANYDEPTH)
         img = cv2.imread(name, 2)
-        return cv2.resize(img, (input_size, input_size)).astype(float)
+        if input_size is not None:
+            img = cv2.resize(img, (input_size, input_size))
+        return img.astype(float)
     elif dataset == 'nyu':
-        ori_img = cv2.resize(cv2.imread(name), (input_size, input_size))
+        ori_img = cv2.imread(name)
+        if input_size is not None:
+            ori_img = cv2.resize(ori_img, (input_size, input_size))
         depth_img = np.empty(ori_img.shape[:2], dtype=np.float32)
         for r in range(depth_img.shape[0]):
             for c in range(depth_img.shape[1]):

@@ -9,7 +9,7 @@ def get_positions(in_file):
 
 
 def check_dataset(dataset):
-    return dataset in set(['icvl', 'nyu'])
+    return dataset in set(['icvl', 'nyu', 'msra'])
 
 
 def get_dataset_file(dataset):
@@ -21,6 +21,8 @@ def get_param(dataset):
         return 240.99, 240.96, 160, 120
     elif dataset == 'nyu':
         return 588.03, 587.07, 320, 240
+    elif dataset == 'msra':
+        return 
 
 
 def pixel2world(x, fx, fy, ux, uy):
@@ -55,8 +57,7 @@ def load_image(dataset, name, input_size=None):
         print('invalid dataset: {}'.format(dataset))
         exit(-1)
     if dataset == 'icvl':
-        #img = cv2.imread(name, cv2.CV_LOAD_IMAGE_ANYDEPTH)
-        img = cv2.imread(name, 2)
+        img = cv2.imread(name, 2)  # depth image
         if input_size is not None:
             img = cv2.resize(img, (input_size, input_size))
         return img.astype(float)
@@ -69,6 +70,8 @@ def load_image(dataset, name, input_size=None):
             for c in range(depth_img.shape[1]):
                 depth_img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
         return depth_img
+    elif dataset == 'msra':  # TODO
+        return None
 
 
 def load_names(dataset):
@@ -80,3 +83,28 @@ def load_centers(dataset):
     with open('labels/{}_center.txt'.format(dataset)) as f:
         return np.array([map(float,
             line.strip().split()) for line in f])
+
+
+def get_sketch_setting(dataset):
+    if dataset == 'icvl':
+        return [(0, 1), (1, 2), (2, 3), (0, 4), (4, 5), (5, 6),
+                (0, 7), (7, 8), (8, 9), (0, 10), (10, 11), (11, 12),
+                (0, 13), (13, 14), (14, 15)]
+    elif dataset == 'nyu':
+        return [(0, 1), (0, 2), (0, 5), (3, 4), (4, 5), (0, 7), (6, 7),
+                (0, 9), (8, 9), (0, 11), (10, 11), (0, 13), (12, 13)]
+    elif dataset == 'msra':
+        return [(0, 1), (1, 2), (2, 3), (3, 4), (0, 5), (5, 6), (6, 7), (7, 8),
+                (0, 9), (9, 10), (10, 11), (11, 12), (0, 13), (13, 14), (14, 15), (15, 16),
+                (0, 17), (17, 18), (18, 19), (19, 20)]
+
+def draw_pose(dataset, img, pose):
+    if not check_dataset(dataset):
+        print('invalid dataset: {}'.format(dataset))
+        exit(-1)
+    for pt in pose:
+        cv2.circle(img, (int(pt[0]), int(pt[1])), 3, (0, 0, 255), -1)
+    for x, y in get_sketch_setting(dataset):
+        cv2.line(img, (int(pose[x, 0]), int(pose[x, 1])),
+                 (int(pose[y, 0]), int(pose[y, 1])), (0, 0, 255), 1)
+    return img

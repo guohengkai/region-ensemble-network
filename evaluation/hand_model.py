@@ -29,6 +29,9 @@ class HandModel(object):
             self._net.blobs['data'].data[idx, ...] = self._crop_image(imgs[idx], centers[idx])
         poses = self._net.forward()['predict']
         return self._transform_pose(poses, centers)
+    
+    def detect_image(self, img):
+        return self.detect_images([img])[0, ...]
 
     def detect_files(self, base_dir, names, centers=None, dataset=None, max_batch=64):
         assert max_batch > 0

@@ -1,8 +1,9 @@
 # Region Ensemble Network: Improving Convolutional Network for Hand Pose Estimation
-By Hengkai Guo (Updated on May 9, 2017)
+By Hengkai Guo (Updated on May 15, 2017)
 
 ## Description
 This is the project of work [Region Ensemble Network: Improving Convolutional Network for Hand Pose Estimation](https://arxiv.org/abs/1702.02447). This repository includes the prediction results for comparison, prediction codes and visualization codes. More details will be released in the future. Here are live results from Kinect 2 sensor using the model trained on ICVL:
+
 ![result1.gif](demo/output_icvl_xinghao.gif) ![result2.gif](demo/output_icvl_hengkai.gif)
 
 ## Results
@@ -19,7 +20,7 @@ $ python evaluation/compute_error.py icvl results/icvl_ren_4x6x6.txt
 ## Visualization
 Please use the Python script `evaluation/show_result.py` for visualziation, which also requires [OpenCV](http://opencv.org/):
 ``` bash
-$ python evaluation/show_result.py icvl results/icvl_ren_4x6x6.txt
+$ python evaluation/show_result.py icvl --in_file=results/icvl_ren_4x6x6.txt
 ```
 You can see all the testing results on the images. Press 'q' to exit.
 
@@ -49,6 +50,8 @@ Please cite the paper in your publications if it helps your research:
 Please email to `guohengkaighk@gmail.com` if you have any suggestions or questions.
 
 ## History
+May 15, 2017: More visualization and demos
+
 May 9, 2017: Models and bugs fixed
 
 May 6, 2017: Visualization and prediction codes

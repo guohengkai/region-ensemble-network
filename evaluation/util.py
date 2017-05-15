@@ -17,11 +17,12 @@ def get_dataset_file(dataset):
 
 
 def get_param(dataset):
+    # return 371.62, 370.19, 256, 212
     if dataset == 'icvl':
         return 240.99, 240.96, 160, 120
     elif dataset == 'nyu':
         return 588.03, 587.07, 320, 240
-    elif dataset == 'msra':
+    elif dataset == 'msra':  # TODO
         return 
 
 
@@ -52,26 +53,31 @@ def get_model(dataset, name='ren_4x6x6'):
             'models/model_{}_{}.caffemodel'.format(dataset, name))
 
 
-def load_image(dataset, name, input_size=None):
+def load_image(dataset, name, input_size=None, is_flip=False):
     if not check_dataset(dataset):
         print('invalid dataset: {}'.format(dataset))
         exit(-1)
     if dataset == 'icvl':
         img = cv2.imread(name, 2)  # depth image
-        if input_size is not None:
-            img = cv2.resize(img, (input_size, input_size))
-        return img.astype(float)
+        img[img == 0] = img.max()  # invalid pixel
+        img = img.astype(float)
     elif dataset == 'nyu':
         ori_img = cv2.imread(name)
         if input_size is not None:
             ori_img = cv2.resize(ori_img, (input_size, input_size))
-        depth_img = np.empty(ori_img.shape[:2], dtype=np.float32)
-        for r in range(depth_img.shape[0]):
-            for c in range(depth_img.shape[1]):
-                depth_img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
-        return depth_img
+        img = np.empty(ori_img.shape[:2], dtype=np.float32)
+        for r in range(img.shape[0]):
+            for c in range(img.shape[1]):
+                img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
+        img[img == 0] = img.max()  # invalid pixel
     elif dataset == 'msra':  # TODO
         return None
+
+    if input_size is not None:
+        img = cv2.resize(img, (input_size, input_size))
+    if is_flip:
+        img[:, ::-1] = img
+    return img
 
 
 def load_names(dataset):

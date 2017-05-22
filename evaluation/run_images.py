@@ -24,6 +24,9 @@ def get_center(img, upper=650, lower=1):
                 count += 1
     if count:
         centers /= count
+    else:
+        # try to prevent center with zeros
+        centers = [img.shape[1]/2, img.shape[0]/2, 300]
     return centers
 
 

@@ -8,7 +8,7 @@ import util
 
 class HandModel(object):
     def __init__(self, dataset, model, center_loader=None,
-            param=None):
+            param=None, use_gpu=False):
         self._dataset = dataset
         self._center_loader = center_loader
         proto_name, model_name = util.get_model(dataset, model)
@@ -16,6 +16,9 @@ class HandModel(object):
         self._net = caffe.Net(proto_name, caffe.TEST, weights=model_name)
         self._input_size = self._net.blobs['data'].shape[-1]
         self._cube_size = 150
+        if use_gpu:
+            caffe.set_mode_gpu()
+            caffe.set_device(0)
 
     def detect_images(self, imgs, centers=None):
         assert centers is not None or self._center_loader is not None

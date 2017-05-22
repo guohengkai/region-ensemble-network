@@ -19,6 +19,8 @@ class HandModel(object):
         if use_gpu:
             caffe.set_mode_gpu()
             caffe.set_device(0)
+        else:
+            caffe.set_mode_cpu()
 
     def detect_images(self, imgs, centers=None):
         assert centers is not None or self._center_loader is not None

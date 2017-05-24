@@ -54,6 +54,9 @@ Please cite the paper in your publications if it helps your research:
 }
 ```
 
+## License
+This program is free software with GNU General Public License v2.
+
 ## Feedback
 Please email to `guohengkaighk@gmail.com` if you have any suggestions or questions.
 

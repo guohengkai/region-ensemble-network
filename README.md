@@ -34,6 +34,14 @@ The script depends on [pyCaffe](https://github.com/BVLC/caffe). Please install t
 ## Models
 The caffe models can be downloaded at [BaiduYun](http://pan.baidu.com/s/1geFecSF) or [here](http://image.ee.tsinghua.edu.cn/models/icip2017-ren/models.zip). Please put them in the `models` directory. (For MSRA models, we only provide the one for fold 1 due to the limit of memory.)
 
+## Realsense Realtime Demo
+We provide a realtime hand pose estimation demo using Intel Realsense device, which requires [pyrealsense](https://github.com/toinsson/pyrealsense). Please use the Python script for demo:
+``` bash
+$ python demo/realsense_realtime_demo.py
+```
+Note that we just use a naive depth thresholding method to detect the hand. Therefore, the hand should be in the range of [0, 650mm] to run this demo.
+We tested this realtime demo with an [Intel Realsense SR300](https://software.intel.com/en-us/realsense/sr300camera).
+
 ## Citation
 Please cite the paper in your publications if it helps your research:
 
@@ -46,11 +54,16 @@ Please cite the paper in your publications if it helps your research:
 }
 ```
 
+## License
+This program is free software with GNU General Public License v2.
+
 ## Feedback
 Please email to `guohengkaighk@gmail.com` if you have any suggestions or questions.
 
 ## History
 July 23, 2017: Add script for center computing and results for newly paper
+
+May 22, 2017: Intel Realsense realtime demo
 
 May 15, 2017: More visualization and demos
 

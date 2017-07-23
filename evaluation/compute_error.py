@@ -6,7 +6,7 @@ from util import get_errors
 
 
 def print_usage():
-    print('usage: {} icvl/nyu in_file'.format(sys.argv[0]))
+    print('usage: {} icvl/nyu/msra in_file'.format(sys.argv[0]))
     exit(-1)
 
 
@@ -21,6 +21,9 @@ def draw_error(dataset, errs):
     elif dataset == 'nyu':
         joint_idx = [0, 1, 2, 5, 3, 13, 12, 11, 10, 9, 8, 7, 6, 14];
         names = ['Palm', 'Wrist1', 'Wrist2', 'Thumb.R', 'Thumb.T', 'Index.R', 'Index.T', 'Mid.R', 'Mid.T', 'Ring.R', 'Ring.T', 'Pinky.R', 'Pinky.T', 'Mean'];
+    elif dataset == 'msra':
+        joint_idx = [0, 1, 4, 5, 8, 9, 12, 13, 16, 17, 20, 21]
+        names = ['Wrist', 'Index.R', 'Index.T', 'Mid.R', 'Mid.T', 'Ring.R', 'Ring.T', 'Pinky.R', 'Pinky.T', 'Thumb.R', 'Thumb.T', 'Mean']
 
     x = np.arange(len(joint_idx))
     plt.figure()
@@ -31,11 +34,10 @@ def draw_error(dataset, errs):
 
 
 def draw_map(errs):
-    err_flat = errs.ravel()
     thresholds = np.arange(0, 85, 5)
     results = np.zeros(thresholds.shape)
     for idx, th in enumerate(thresholds):
-        results[idx] = np.where(err_flat <= th)[0].shape[0] * 1.0 / err_flat.shape[0]
+        results[idx] = np.where(np.max(errs, axis=1) <= th)[0].shape[0] * 1.0 / errs.shape[0]
 
     plt.figure()
     plt.plot(thresholds, results)

@@ -17,13 +17,12 @@ def get_dataset_file(dataset):
 
 
 def get_param(dataset):
-    # return 371.62, 370.19, 256, 212
     if dataset == 'icvl':
         return 240.99, 240.96, 160, 120
     elif dataset == 'nyu':
         return 588.03, 587.07, 320, 240
-    elif dataset == 'msra':  # TODO
-        return 
+    elif dataset == 'msra':
+        return 241.42, 241.42, 160, 120
 
 
 def pixel2world(x, fx, fy, ux, uy):
@@ -69,7 +68,6 @@ def load_image(dataset, name, input_size=None, is_flip=False):
         for r in range(img.shape[0]):
             for c in range(img.shape[1]):
                 img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
-        img[img == 0] = img.max()  # invalid pixel
     elif dataset == 'msra':  # TODO
         return None
 
@@ -114,3 +112,27 @@ def draw_pose(dataset, img, pose):
         cv2.line(img, (int(pose[x, 0]), int(pose[x, 1])),
                  (int(pose[y, 0]), int(pose[y, 1])), (0, 0, 255), 1)
     return img
+
+
+def get_center(img, upper=650, lower=1):
+    centers = np.array([0.0, 0.0, 0.0])
+    count = 0
+    for y in range(img.shape[0]):
+        for x in range(img.shape[1]):
+            if img[y, x] <= upper and img[y, x] >= lower:
+                centers[0] += x
+                centers[1] += y
+                centers[2] += img[y, x]
+                count += 1
+    if count:
+        centers /= count
+    return centers
+
+
+def save_results(results, out_file):
+    with open(out_file, 'w') as f:
+        for result in results:
+            for j in range(result.shape[0]):
+                for k in range(result.shape[1]):
+                    f.write('{:.3f} '.format(result[j, k]))
+            f.write('\n')

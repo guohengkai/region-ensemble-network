@@ -9,14 +9,6 @@ def print_usage():
     exit(-1)
 
 
-def save_results(results, out_file):
-    with open(out_file, 'w') as f:
-        for i in range(results.shape[0]):
-            for j in range(results.shape[1]):
-                for k in range(results.shape[2]):
-                    f.write('{:.3f} '.format(results[i, j, k]))
-            f.write('\n')
-
 def main():
     if len(sys.argv) < 5:
         print_usage()
@@ -30,7 +22,7 @@ def main():
     names = util.load_names(dataset)
     centers = util.load_centers(dataset)
     results = hand_model.detect_files(base_dir, names, centers)
-    save_results(results, out_file)
+    util.save_results(results, out_file)
 
 if __name__ == '__main__':
     main()

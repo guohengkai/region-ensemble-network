@@ -7,35 +7,6 @@ import util
 import numpy as np
 
 
-def print_usage():
-    print('usage: {} icvl/nyu model_prefix in_file out_file'.format(sys.argv[0]))
-    exit(-1)
-
-
-def get_center(img, upper=650, lower=1):
-    centers = np.array([0.0, 0.0, 0.0])
-    count = 0
-    for y in range(img.shape[0]):
-        for x in range(img.shape[1]):
-            if img[y, x] <= upper and img[y, x] >= lower:
-                centers[0] += x
-                centers[1] += y
-                centers[2] += img[y, x]
-                count += 1
-    if count:
-        centers /= count
-    return centers
-
-
-def save_results(results, out_file):
-    with open(out_file, 'w') as f:
-        for result in results:
-            for j in range(result.shape[0]):
-                for k in range(result.shape[1]):
-                    f.write('{:.3f} '.format(result[j, k]))
-            f.write('\n')
-
-
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('dataset_model', help='the dataset type for model')
@@ -63,13 +34,13 @@ def main():
         dataset_image = dataset_model
 
     hand_model = HandModel(dataset_model, args.model_prefix,
-            lambda img: get_center(img, lower=args.lower, upper=args.upper),
+            lambda img: util.get_center(img, lower=args.lower, upper=args.upper),
             param=(args.fx, args.fy, args.ux, args.uy))
     with open(args.in_file) as f:
         names = [line.strip() for line in f]
     results = hand_model.detect_files(args.base_dir, names, dataset=dataset_image,
             is_flip=args.is_flip)
-    save_results(results, args.out_file)
+    util.save_results(results, args.out_file)
 
 
 if __name__ == '__main__':

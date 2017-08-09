@@ -1,8 +1,8 @@
-# Region Ensemble Network: Improving Convolutional Network for Hand Pose Estimation
-By Hengkai Guo (Updated on July 23, 2017)
+# Towards Good Practices for Deep 3D Hand Pose Estimation
+By Hengkai Guo (Updated on Aug 9, 2017)
 
 ## Description
-This is the project of work [Region Ensemble Network: Improving Convolutional Network for Hand Pose Estimation](https://arxiv.org/abs/1702.02447). This repository includes the prediction results for comparison, prediction codes and visualization codes. More details will be released in the future. Here are live results from Kinect 2 sensor using the model trained on ICVL:
+This is the project of work [Region Ensemble Network: Improving Convolutional Network for Hand Pose Estimation](https://arxiv.org/abs/1702.02447) and [Towards Good Practices for Deep 3D Hand Pose Estimation](https://arxiv.org/abs/1707.07248). This repository includes the prediction results for comparison, prediction codes and visualization codes. More details will be released in the future. Here are live results from Kinect 2 sensor using the model trained on ICVL:
 
 ![result1.gif](demo/output_icvl_xinghao.gif) ![result2.gif](demo/output_icvl_hengkai.gif)
 
@@ -46,6 +46,12 @@ We tested this realtime demo with an [Intel Realsense SR300](https://software.in
 Please cite the paper in your publications if it helps your research:
 
 ```
+@article{guo2017towards,
+  title={Towards Good Practices for Deep 3D Hand Pose Estimation},
+  author={Guo, Hengkai and Wang, Guijin and Chen, Xinghao and Zhang, Cairong},
+  journal={arXiv preprint arXiv:1707.07248},
+  year={2017}
+}
 @article{guo2017region,
   title={Region Ensemble Network: Improving Convolutional Network for Hand Pose Estimation},
   author={Guo, Hengkai and Wang, Guijin and Chen, Xinghao and Zhang, Cairong and Qiao, Fei and Yang, Huazhong},
@@ -61,6 +67,8 @@ This program is free software with GNU General Public License v2.
 Please email to `guohengkaighk@gmail.com` if you have any suggestions or questions.
 
 ## History
+Aug 9, 2017: Update papers
+
 July 23, 2017: Add script for center computing and results for newly paper
 
 May 22, 2017: Intel Realsense realtime demo

@@ -115,7 +115,7 @@ def draw_pose(dataset, img, pose):
 
 
 def get_center(img, upper=650, lower=1):
-    centers = np.array([0.0, 0.0, 0.0])
+    centers = np.array([0.0, 0.0, 300.0])
     count = 0
     for y in range(img.shape[0]):
         for x in range(img.shape[1]):

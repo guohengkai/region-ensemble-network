@@ -10,7 +10,7 @@ sys.path.append(os.path.dirname(BASE_DIR))
 sys.path.append(os.path.join(BASE_DIR, '../evaluation'))
 from evaluation.hand_model import HandModel
 import evaluation.util as util
-from run_images import get_center
+from evaluation.util import get_center
 
 def init_device():
     pyrs.start()

@@ -102,4 +102,6 @@ class HandModel(object):
         res_poses[:, 0::3] = res_poses[:, 0::3] * self._fx / centers_tile[:, :, 2] + centers_tile[:, :, 0]
         res_poses[:, 1::3] = res_poses[:, 1::3] * self._fy / centers_tile[:, :, 2] + centers_tile[:, :, 1]
         res_poses[:, 2::3] += centers_tile[:, :, 2]
-        return np.reshape(res_poses, [poses.shape[0], -1, 3])
+        res_poses = np.reshape(res_poses, [poses.shape[0], -1, 3])
+        if self._dataset == 'nyu':
+            res_poses = res_poses[:, [6, 7, 8, 9, 10, 11, 12, 13, 3, 4, 5, 1, 2, 0], :]

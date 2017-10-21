@@ -1,1 +1,6 @@
 *.pyc
+*.png
+*.txt
+*.gif
+*.caffemodel
+.spyproject*

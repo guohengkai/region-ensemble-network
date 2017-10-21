@@ -22,7 +22,7 @@ def get_param(dataset):
     elif dataset == 'nyu':
         return 588.03, 587.07, 320, 240
     elif dataset == 'msra':
-        return 
+        return 241.42, 241.42, 160, 120
 
 
 def pixel2world(x, fx, fy, ux, uy):
@@ -52,26 +52,30 @@ def get_model(dataset, name='ren_4x6x6'):
             'models/model_{}_{}.caffemodel'.format(dataset, name))
 
 
-def load_image(dataset, name, input_size=None):
+def load_image(dataset, name, input_size=None, is_flip=False):
     if not check_dataset(dataset):
         print('invalid dataset: {}'.format(dataset))
         exit(-1)
     if dataset == 'icvl':
         img = cv2.imread(name, 2)  # depth image
-        if input_size is not None:
-            img = cv2.resize(img, (input_size, input_size))
-        return img.astype(float)
+        img[img == 0] = img.max()  # invalid pixel
+        img = img.astype(float)
     elif dataset == 'nyu':
         ori_img = cv2.imread(name)
         if input_size is not None:
             ori_img = cv2.resize(ori_img, (input_size, input_size))
-        depth_img = np.empty(ori_img.shape[:2], dtype=np.float32)
-        for r in range(depth_img.shape[0]):
-            for c in range(depth_img.shape[1]):
-                depth_img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
-        return depth_img
+        img = np.empty(ori_img.shape[:2], dtype=np.float32)
+        for r in range(img.shape[0]):
+            for c in range(img.shape[1]):
+                img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
     elif dataset == 'msra':  # TODO
         return None
+
+    if input_size is not None:
+        img = cv2.resize(img, (input_size, input_size))
+    if is_flip:
+        img[:, ::-1] = img
+    return img
 
 
 def load_names(dataset):
@@ -108,3 +112,27 @@ def draw_pose(dataset, img, pose):
         cv2.line(img, (int(pose[x, 0]), int(pose[x, 1])),
                  (int(pose[y, 0]), int(pose[y, 1])), (0, 0, 255), 1)
     return img
+
+
+def get_center(img, upper=650, lower=1):
+    centers = np.array([0.0, 0.0, 300.0])
+    count = 0
+    for y in range(img.shape[0]):
+        for x in range(img.shape[1]):
+            if img[y, x] <= upper and img[y, x] >= lower:
+                centers[0] += x
+                centers[1] += y
+                centers[2] += img[y, x]
+                count += 1
+    if count:
+        centers /= count
+    return centers
+
+
+def save_results(results, out_file):
+    with open(out_file, 'w') as f:
+        for result in results:
+            for j in range(result.shape[0]):
+                for k in range(result.shape[1]):
+                    f.write('{:.3f} '.format(result[j, k]))
+            f.write('\n')

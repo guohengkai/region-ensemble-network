@@ -105,3 +105,4 @@ class HandModel(object):
         res_poses = np.reshape(res_poses, [poses.shape[0], -1, 3])
         if self._dataset == 'nyu':
             res_poses = res_poses[:, [6, 7, 8, 9, 10, 11, 12, 13, 3, 4, 5, 1, 2, 0], :]
+        return res_poses

@@ -35,9 +35,22 @@ The script depends on [pyCaffe](https://github.com/BVLC/caffe). Please install t
 The caffe models can be downloaded at [BaiduYun](http://pan.baidu.com/s/1geFecSF) or [here](http://image.ee.tsinghua.edu.cn/models/icip2017-ren/models.zip). Please put them in the `models` directory. (For MSRA models, we only provide the one for fold 1 due to the limit of memory.)
 
 ## Realsense Realtime Demo
-We provide a realtime hand pose estimation demo using Intel Realsense device, which requires [pyrealsense](https://github.com/toinsson/pyrealsense). Please use the Python script for demo:
+We provide a realtime hand pose estimation demo using Intel Realsense device.
+
+### Using [pyrealsense](https://github.com/toinsson/pyrealsense)
+When you are using [pyrealsense](https://github.com/toinsson/pyrealsense) v1.x and v0.x, please use the Python script for demo:
 ``` bash
-$ python demo/realsense_realtime_demo.py
+$ python demo/realsense_realtime_demo_pyrealsense_1.x.py
+```
+When you are using [pyrealsense](https://github.com/toinsson/pyrealsense) v2.0 and above, please use the Python script for demo:
+``` bash
+$ python demo/realsense_realtime_demo_pyrealsense_2.x.py
+```
+
+### Using [librealsense](https://github.com/IntelRealSense/librealsense)
+Firstly compile and install the [python wrapper](https://github.com/IntelRealSense/librealsense/tree/5285629b4ddb374f1). After everything is working properly, just run the following python script for demo:
+``` bash
+$ python demo/realsense_realtime_demo_librealsense2.py
 ```
 Note that we just use a naive depth thresholding method to detect the hand. Therefore, the hand should be in the range of [0, 650mm] to run this demo.
 We tested this realtime demo with an [Intel Realsense SR300](https://software.intel.com/en-us/realsense/sr300camera).

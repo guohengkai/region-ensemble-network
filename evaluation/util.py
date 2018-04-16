@@ -52,6 +52,17 @@ def get_model(dataset, name='ren_4x6x6'):
             'models/model_{}_{}.caffemodel'.format(dataset, name))
 
 
+def read_depth_from_bin(image_name):
+    f = open(image_name, 'rb')
+    data = np.fromfile(f, dtype=np.uint32)
+    width, height, left, top, right , bottom = data[:6]
+    depth = np.zeros((height, width), dtype=np.float32)
+    f.seek(4*6)
+    data = np.fromfile(f, dtype=np.float32)
+    depth[top:bottom, left:right] = np.reshape(data, (bottom-top, right-left))
+    return depth
+
+
 def load_image(dataset, name, input_size=None, is_flip=False):
     if not check_dataset(dataset):
         print('invalid dataset: {}'.format(dataset))
@@ -61,15 +72,13 @@ def load_image(dataset, name, input_size=None, is_flip=False):
         img[img == 0] = img.max()  # invalid pixel
         img = img.astype(float)
     elif dataset == 'nyu':
-        ori_img = cv2.imread(name)
-        if input_size is not None:
-            ori_img = cv2.resize(ori_img, (input_size, input_size))
-        img = np.empty(ori_img.shape[:2], dtype=np.float32)
-        for r in range(img.shape[0]):
-            for c in range(img.shape[1]):
-                img[r, c] = (ori_img[r, c, 1] << 8) + ori_img[r, c, 0]
-    elif dataset == 'msra':  # TODO
-        return None
+        img = cv2.imread(name)
+        g = np.asarray(img[:, :, 1], np.int32)
+        b = np.asarray(img[:, :, 0], np.int32)
+        dpt = np.bitwise_or(np.left_shift(g, 8), b)
+        img = np.asarray(dpt, np.float32)
+    elif dataset == 'msra':
+        return read_depth_from_bin(name)
 
     if input_size is not None:
         img = cv2.resize(img, (input_size, input_size))

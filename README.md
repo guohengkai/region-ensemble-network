@@ -20,7 +20,7 @@ $ python evaluation/compute_error.py icvl results/icvl_ren_9x6x6.txt
 ## Visualization
 Please use the Python script `evaluation/show_result.py` for visualziation, which also requires [OpenCV](http://opencv.org/):
 ``` bash
-$ python evaluation/show_result.py icvl --in_file=results/icvl_ren_4x6x6.txt
+$ python evaluation/show_result.py icvl your/path/to/ICVL/images/test/Depth --in_file=results/icvl_ren_4x6x6.txt
 ```
 You can see all the testing results on the images. Press 'q' to exit.
 

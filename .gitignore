@@ -6,3 +6,6 @@ demo-cpp
 *.gif
 *.caffemodel
 .spyproject*
+.idea
+training
+caffe-pose

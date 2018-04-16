@@ -1,1 +1,11 @@
+*~
+demo-cpp
 *.pyc
+*.png
+*.txt
+*.gif
+*.caffemodel
+.spyproject*
+.idea
+training
+caffe-pose

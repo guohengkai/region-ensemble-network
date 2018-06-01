@@ -10,7 +10,8 @@ sys.path.append(os.path.dirname(BASE_DIR))
 sys.path.append(os.path.join(BASE_DIR, '../evaluation'))
 from evaluation.hand_model import HandModel
 import evaluation.util as util
-from evaluation.util import get_center
+from evaluation.util import get_center_fast as get_center
+
     
 def read_frame_from_device(dev):
     dev.wait_for_frame()

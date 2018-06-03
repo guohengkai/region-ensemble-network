@@ -138,6 +138,24 @@ def get_center(img, upper=650, lower=1):
     return centers
 
 
+def get_center_fast(img, upper=650, lower=1):
+    centers = np.array([0.0, 0.0, 300.0])
+    flag = np.logical_and(img <= upper, img >= lower)
+    x = np.linspace(0, img.shape[1], img.shape[1])
+    y = np.linspace(0, img.shape[0], img.shape[0])
+    xv, yv = np.meshgrid(x, y)
+    centers[0] = np.mean(xv[flag])
+    centers[1] = np.mean(yv[flag])
+    centers[2] = np.mean(img[flag])
+    if centers[2] <= 0:
+        centers[2] = 300.0
+    if not flag.any():
+        centers[0] = 0
+        centers[1] = 0
+        centers[2] = 300.0
+    return centers
+
+
 def save_results(results, out_file):
     with open(out_file, 'w') as f:
         for result in results:

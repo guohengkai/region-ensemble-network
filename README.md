@@ -32,7 +32,7 @@ $ python evaluation/run_model.py icvl ren_4x6x6 your/path/to/output/file your/pa
 The script depends on [pyCaffe](https://github.com/BVLC/caffe). Please install the Caffe first.
 
 ## Models
-The caffe models can be downloaded at [BaiduYun](http://pan.baidu.com/s/1geFecSF) or [here](http://image.ee.tsinghua.edu.cn/models/icip2017-ren/models.zip). Please put them in the `models` directory. (For MSRA models, we only provide the one for fold 1 due to the limit of memory.)
+The caffe models can be downloaded at [BaiduYun](http://pan.baidu.com/s/1geFecSF) or [here](http://image.ee.tsinghua.edu.cn/data/icip2017-ren/models.zip). Please put them in the `models` directory. (For MSRA models, we only provide the one for fold 1 due to the limit of memory.)
 
 ## Realsense Realtime Demo
 We provide a realtime hand pose estimation demo using Intel Realsense device.

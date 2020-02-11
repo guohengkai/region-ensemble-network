@@ -32,7 +32,7 @@ $ python evaluation/run_model.py icvl ren_4x6x6 your/path/to/output/file your/pa
 The script depends on [pyCaffe](https://github.com/BVLC/caffe). Please install the Caffe first.
 
 ## Models
-The caffe models can be downloaded at [BaiduYun](http://pan.baidu.com/s/1geFecSF) or [here](http://image.ee.tsinghua.edu.cn/data/icip2017-ren/models.zip). Please put them in the `models` directory. (For MSRA models, we only provide the one for fold 1 due to the limit of memory.)
+The caffe models can be downloaded at [BaiduYun](http://pan.baidu.com/s/1geFecSF), [GoogleDrive](https://drive.google.com/drive/folders/1wJERscsridu1GdStApBXXzh9G_dWTDne?usp=sharing) or [here](http://image.ee.tsinghua.edu.cn/data/icip2017-ren/models.zip). Please put them in the `models` directory. (For MSRA models, we only provide the one for fold 1 due to the limit of memory.)
 
 ## Realsense Realtime Demo
 We provide a realtime hand pose estimation demo using Intel Realsense device.
@@ -80,6 +80,8 @@ This program is free software with GNU General Public License v2.
 Please email to `guohengkaighk@gmail.com` if you have any suggestions or questions.
 
 ## History
+Feb 11, 2020: Update Google Drive link for models
+
 Aug 9, 2017: Update papers
 
 July 23, 2017: Add script for center computing and results for newly paper
